@@ -15,16 +15,17 @@ class Post(models.Model):
 
 
 class Group(models.Model):
-    text = models.CharField()
-    slug = models.CharField()
-    description = models.TextField()
+    # text = models.CharField()
+    # slug = models.CharField()
+    # description = models.TextField()
+    #
+    # pub_date = models.DateTimeField(auto_now_add=True)
+    # author = models.ForeignKey(
+    #     User,
+    #     on_delete=models.CASCADE,
+    #     related_name='posts'
+    # )
+    pass
 
-    pub_date = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='posts'
-    )
-
-    def __str__(self):
-        pass
+    # def __str__(self):
+    #     pass
