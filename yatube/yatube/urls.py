@@ -20,4 +20,3 @@ urlpatterns = [
     path('', include('posts.urls', namespace='posts')),
     path('admin/', admin.site.urls),
 ]
-#path('group/<slug:slug>/', include('groups.views.group_posts()')),
