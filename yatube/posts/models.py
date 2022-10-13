@@ -8,8 +8,8 @@ class Group(models.Model):
     title = models.CharField(
         max_length=200,
         verbose_name="Заглавие",
-        help_text="Укажите название группы," \
-                  " форма в админке станет более  понятной."
+        help_text="Укажите название группы, "
+                  "форма в админке станет более  понятной."
     )
     slug = models.SlugField(unique=True)
     description = models.TextField()
@@ -39,5 +39,3 @@ class Post(models.Model):
 
     def __str__(self):
         return self.text
-
-

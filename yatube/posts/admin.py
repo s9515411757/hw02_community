@@ -22,6 +22,3 @@ class GroupAdmin(admin.ModelAdmin):
     list_display = ('pk', 'title', 'slug', 'description')
     list_editable = ('slug',)
     empty_value_display = '-пусто-'
-
-
-
