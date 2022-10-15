@@ -1,11 +1,11 @@
-from .models import Post, Group
 from django.shortcuts import render, get_object_or_404
+from yatube.settings import QUANTITY_POSTS
 
-QUANTITY_POSTS = 10
+from .models import Post, Group
 
 
 def index(request):
-    posts = Post.objects.order_by('-pub_date')[:QUANTITY_POSTS]
+    posts = Post.objects.filter()[:QUANTITY_POSTS]
     context = {
         'posts': posts,
     }
@@ -16,7 +16,7 @@ def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
     posts = Post.objects.filter(
         group=group
-    ).order_by('-pub_date')[:QUANTITY_POSTS]
+    )[:QUANTITY_POSTS]
 
     context = {
         'group': group,

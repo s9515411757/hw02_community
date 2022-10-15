@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+QUANTITY_POSTS = 10
 
 # Application definition
 
