@@ -8,10 +8,13 @@ class Group(models.Model):
     title = models.CharField(
         max_length=200,
         verbose_name="Заглавие",
-        help_text="Укажите название группы, "
-                  "форма в админке станет более  понятной."
+        help_text="Укажите название группы."
     )
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(
+        unique=True,
+        verbose_name="Название",
+        help_text="Укажите название группы."
+    )
     description = models.TextField()
 
     def __str__(self):
@@ -34,8 +37,8 @@ class Post(models.Model):
         related_name='posts'
     )
 
-    def __str__(self):
-        return self.text
-
     class Meta:
         ordering = ('-pub_date', )
+
+    def __str__(self):
+        return self.text

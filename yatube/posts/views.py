@@ -1,11 +1,11 @@
 from django.shortcuts import render, get_object_or_404
-from yatube.settings import QUANTITY_POSTS
+from django.conf import settings
 
 from .models import Post, Group
 
 
 def index(request):
-    posts = Post.objects.filter()[:QUANTITY_POSTS]
+    posts = Post.objects.select_related()[:settings.QUANTITY_POSTS]
     context = {
         'posts': posts,
     }
