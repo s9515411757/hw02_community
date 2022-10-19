@@ -5,7 +5,12 @@ from .models import Post, Group
 
 
 def index(request):
-    posts = Post.objects.select_related()[:settings.QUANTITY_POSTS]
+    posts = (
+        Post
+        .objects
+        .select_related("author", "group")
+        .all()[:settings.QUANTITY_POSTS]
+    )
     context = {
         'posts': posts,
     }
