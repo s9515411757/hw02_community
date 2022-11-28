@@ -86,7 +86,7 @@ def post_edit(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     form = PostForm(instance=post)
 
-    if request.method == 'POST':
+    if request.method == 'POST' and request.user == post.author:
         form = PostForm(request.POST)
         if form.is_valid():
             form = form.save(commit=False)
