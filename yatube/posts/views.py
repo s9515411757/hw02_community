@@ -1,10 +1,13 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.core.paginator import Paginator
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 
 from .models import Post, Group, User
+from .forms import PostForm
 
 
+@login_required
 def index(request):
     post_list = Post.objects.all()
     paginator = Paginator(post_list, settings.QUANTITY_POSTS)
@@ -18,6 +21,7 @@ def index(request):
     return render(request, 'posts/index.html', context)
 
 
+@login_required
 def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
     posts = Post.objects.filter(
@@ -31,6 +35,7 @@ def group_posts(request, slug):
     return render(request, 'posts/group_list.html', context)
 
 
+@login_required
 def profile(request, username):
     user = User.objects.get(username=username)
     # Здесь код запроса к модели и создание словаря контекста
@@ -48,6 +53,7 @@ def profile(request, username):
     return render(request, 'posts/profile.html', context)
 
 
+@login_required
 def post_detail(request, post_id):
     # Здесь код запроса к модели и создание словаря контекста
     post = Post.objects.get(
@@ -60,3 +66,43 @@ def post_detail(request, post_id):
         'post_count': post_count,
     }
     return render(request, 'posts/post_detail.html', context)
+
+
+@login_required
+def post_create(request):
+    form = PostForm(request.POST or None)
+    if form.is_valid():
+        form = form.save(commit=False)
+        form.author = request.user
+        form.save()
+        return redirect('posts:profile', request.user.username)
+    template = 'posts/create_post.html'
+    context = {'form': form,
+               'is_edit': False}
+    return render(request, template, context)
+
+
+@login_required
+def post_edit(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    form = PostForm(request.POST or None, instance=post)
+    post_url = reverse('posts:post_detail', kwargs={'post_id': post.id})
+    if request.user != post.author:
+        return redirect(post_url)
+
+    if request.method == 'POST':
+
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.author = request.user
+            form.save()
+            return redirect('posts:post_detail', post_id)
+
+    template = 'posts/create_post.html'
+
+    context = {
+        'is_edit': True,
+        'form': form,
+
+    }
+    return render(request, template, context)
